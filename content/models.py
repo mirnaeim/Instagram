@@ -1,11 +1,5 @@
-from django.contrib.auth import get_user_model
 from django.db import models
-
-
-User = get_user_model()
-
-
-# Create your models here.
+from account.models import Profile
 
 
 class MyBaseModel(models.Model):
@@ -21,7 +15,7 @@ class MyBaseModel(models.Model):
 
 
 class Post(MyBaseModel):
-    account = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
+    account = models.ForeignKey(Profile, null=False, blank=False, on_delete=models.CASCADE)
     caption = models.TextField(null=False, blank=False, verbose_name='Caption')
 
     class Meta:

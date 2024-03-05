@@ -8,7 +8,7 @@ from .models import Post, PostMedia
 
 @register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'caption',)
+    list_display = ('id', 'caption', 'media')
 
 
 @register(PostMedia)
