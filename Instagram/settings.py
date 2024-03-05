@@ -34,10 +34,12 @@ INSTALLED_APPS = [
     # Trusted Apps
     'rest_framework',
     'django_filters',
+    'channels',
 
     # My Apps
     'content.apps.ContentConfig',
     'account.apps.AccountConfig',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
