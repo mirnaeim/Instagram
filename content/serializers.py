@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Post, PostMedia
+from .models import Post, PostMedia, Comment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,7 +29,23 @@ class PostSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'caption',
-            # 'comments',
+            'comments',
             'account',
             'media',
+            'mentions',
+        )
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = (
+            'id',
+            'author',
+            'post',
+            'content',
+            'created_date',
+            'updated_date',
         )

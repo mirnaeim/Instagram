@@ -37,12 +37,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         # TODO number of followers and followings
-        # fields = '__all__'
         fields = (
             'id',
             'username',
             'followers',
             'followings',
+            'account_posts',
             # 'bio',
             # 'name',
         )

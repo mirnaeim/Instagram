@@ -24,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,7 @@ INSTALLED_APPS = [
     # My Apps
     'content.apps.ContentConfig',
     'account.apps.AccountConfig',
-    'chat.apps.ChatConfig',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,21 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny'
     ]
+}
+
+
+# Daphne
+# ASGI_APPLICATION = "Instagram.asgi.application"
+
+
+ASGI_APPLICATION = "Instagram.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }

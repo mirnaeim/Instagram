@@ -15,8 +15,11 @@ class MyBaseModel(models.Model):
 
 
 class Post(MyBaseModel):
-    account = models.ForeignKey(Profile, null=False, blank=False, on_delete=models.CASCADE)
+    account = models.ForeignKey(Profile, null=False, blank=False, on_delete=models.CASCADE,
+                                related_name='account_posts')
     caption = models.TextField(null=False, blank=False, verbose_name='Caption')
+    mentions = models.ManyToManyField(Profile, null=True, blank=True, verbose_name='Mentions',
+                                      related_name='mentions_posts')
 
     class Meta:
         verbose_name = 'Post'
@@ -53,3 +56,31 @@ class PostMedia(MyBaseModel):
 
     def __str__(self):
         return self.post.caption
+
+
+class Comment(MyBaseModel):
+    account = models.ForeignKey(Profile, null=False, blank=False, on_delete=models.CASCADE, related_name='comments',
+                                verbose_name='account')
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, related_name='comments',
+                             verbose_name='Post')
+    content = models.TextField(null=False, blank=False, verbose_name='Content')
+
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+        ordering = ('-created_date',)
+
+    def __str__(self):
+        return f'{self.content} Commented by {self.account.username}'
+
+
+class Story(MyBaseModel):
+    pass
+
+
+class Like(MyBaseModel):
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, related_name='likes',
+                             verbose_name='Post')
+    account = models.ForeignKey(Profile, null=False, blank=False, on_delete=models.CASCADE, related_name='likes',
+                                verbose_name='Account')
+

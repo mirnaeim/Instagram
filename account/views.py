@@ -1,7 +1,8 @@
 from rest_framework import generics, permissions, viewsets
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import RegisterSerializer, ProfileSerializer
-from .models import Profile
+from .models import Profile, Contact
 # Register API
 
 
@@ -23,3 +24,20 @@ class RegisterApi(generics.GenericAPIView):
 class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+
+
+@api_view()
+def follow(request, profile_id):
+    profile = Profile.objects.get(id=request.user.id)
+    following = Profile.objects.get(id=profile_id)
+    contact = Contact.objects.filter(user_from=profile, user_to=following)
+    if contact :
+        contact.delete()
+        return Response(following.username + " is Unfollowed")
+    else:
+        Contact.objects.create(
+            user_from=profile,
+            user_to=following
+        )
+        return Response(profile.username + " started folowing " + following.username)
+
