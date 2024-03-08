@@ -18,7 +18,7 @@ class Post(MyBaseModel):
     account = models.ForeignKey(Profile, null=False, blank=False, on_delete=models.CASCADE,
                                 related_name='account_posts')
     caption = models.TextField(null=False, blank=False, verbose_name='Caption')
-    mentions = models.ManyToManyField(Profile, null=True, blank=True, verbose_name='Mentions',
+    mentions = models.ManyToManyField(Profile, blank=True, verbose_name='Mentions',
                                       related_name='mentions_posts')
 
     class Meta:

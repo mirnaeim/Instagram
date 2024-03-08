@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     # My Apps
     'content.apps.ContentConfig',
     'account.apps.AccountConfig',
-    'chat',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'Instagram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Instagram.wsgi.application'
+# WSGI_APPLICATION = 'Instagram.wsgi.application'
 
 
 # Database
@@ -140,16 +140,12 @@ REST_FRAMEWORK = {
 }
 
 
-# Daphne
-# ASGI_APPLICATION = "Instagram.asgi.application"
+# 4. Add the below line for asgi config
+ASGI_APPLICATION = 'Instagram.asgi.application'
 
-
-ASGI_APPLICATION = "Instagram.asgi.application"
+# 5. Add the below line for channel layer
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
 }
