@@ -1,18 +1,23 @@
+# mysite/asgi.py
 import os
-# 👇 1. Update the below import lib
-from django.core.asgi import get_asgi_application
+
+from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
-from chat.routing import websocket_urlpatterns
+from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Instagram.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Instagram.settings")
+# Initialize Django ASGI application early to ensure the AppRegistry
+# is populated before importing code that may import ORM models.
+django_asgi_app = get_asgi_application()
 
-# 👇 2. Update the application var
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": AllowedHostsOriginValidator(
-            URLRouter(
-                websocket_urlpatterns
-            )
+import chat.routing
+
+application = ProtocolTypeRouter(
+    {
+        "http": django_asgi_app,
+        "websocket": AllowedHostsOriginValidator(
+            AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns))
         ),
-})
+    }
+)
