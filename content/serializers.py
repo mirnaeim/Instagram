@@ -37,15 +37,13 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
+    account = UserSerializer(read_only=True)
 
     class Meta:
         model = Comment
         fields = (
             'id',
-            'author',
+            'account',
             'post',
             'content',
-            'created_date',
-            'updated_date',
         )

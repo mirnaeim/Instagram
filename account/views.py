@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import RegisterSerializer, ProfileSerializer
 from .models import Profile, Contact
+
+from log.models import Log
 # Register API
 
 
@@ -31,13 +33,19 @@ def follow(request, profile_id):
     profile = Profile.objects.get(id=request.user.id)
     following = Profile.objects.get(id=profile_id)
     contact = Contact.objects.filter(user_from=profile, user_to=following)
-    if contact :
+    if contact:
         contact.delete()
+        Log.objects.create(
+            log_text=f'{profile.username} unFollowed {following.username}.'
+        )
         return Response(following.username + " is Unfollowed")
     else:
         Contact.objects.create(
             user_from=profile,
             user_to=following
         )
-        return Response(profile.username + " started folowing " + following.username)
+        Log.objects.create(
+            log_text=f'@{profile.username} started following @{following.username}.'
+        )
+        return Response(profile.username + " started following " + following.username)
 

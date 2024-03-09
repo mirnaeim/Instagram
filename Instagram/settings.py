@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'content.apps.ContentConfig',
     'account.apps.AccountConfig',
     'chat.apps.ChatConfig',
+    'log.apps.LogConfig'
 ]
 
 MIDDLEWARE = [
